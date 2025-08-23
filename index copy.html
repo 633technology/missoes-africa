@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missões - Batista Atitude</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <style>
+        .header-content .logo-text h1,
+        .header-content .logo-text p {
+            color: #fff;
+            /* branco */
+            font-weight: 700;
+            /* negrito */
+        }
+    </style>
+    <header class="header">
+        <!-- <div class="header-content">
+            <div class="logo">
+                <img src="images/logo-missoes-batista-atitude.png" alt="Logo Missões Batista Atitude">
+                <div class="logo-text">
+                    <h1>Missões - Batista Atitude</h1>
+                    <p>Levando o Evangelho à África</p>
+                </div>
+            </div>
+        </div> -->
+        
+        <nav class="nav">
+            <ul>
+                <li class="nav-item">
+                    <a href="pages/angola-bie.html">
+                        <img src="images/icon-angola.png" alt="Angola" class="nav-icon">
+                        Angola - Bié
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/congo-lubumbashi.html">
+                        <img src="images/icon-congo.png" alt="Congo" class="nav-icon">
+                        República do Congo - Lubumbashi
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/congo-kinshasa.html">
+                        <img src="images/icon-congo.png" alt="Congo" class="nav-icon">
+                        República do Congo - Kinshasa
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/mocambique-beira.html">
+                        <img src="images/icon-mozambique.png" alt="Moçambique" class="nav-icon">
+                        Moçambique - Cidade da Beira
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- <section class="hero">
+            <h1 class="logo-text">Missões África  - Batista Atitude</h1>
+            <p class="logo-text">Informações detalhadas para orientar o plantio de igrejas, discipulado e obras sociais em diferentes regiões da África. Selecione uma localidade no menu acima para acessar informações missionárias completas.</p>
+        </section> -->
+
+        <section class="locations-grid">
+            <div class="location-card">
+                <img src="images/icon-angola.png" alt="Angola">
+                <h3>Angola - Província do Bié</h3>
+                <p>Informações completas sobre a província do Bié, incluindo geografia, cultura, economia e oportunidades missionárias na região central de Angola.</p>
+                <a href="pages/angola-bie.html">
+                    <span>Explorar Região</span>
+                    <span>→</span>
+                </a>
+            </div>
+
+            <div class="location-card">
+                <img src="images/icon-congo.png" alt="Congo">
+                <h3>República Democrática do Congo - Lubumbashi</h3>
+                <p>Dados estratégicos sobre Lubumbashi, segunda maior cidade da RDC, centro industrial e oportunidades para implantação de igrejas.</p>
+                <a href="pages/congo-lubumbashi.html">
+                    <span>Explorar Região</span>
+                    <span>→</span>
+                </a>
+            </div>
+
+            <div class="location-card">
+                <img src="images/icon-congo.png" alt="Congo">
+                <h3>República Democrática do Congo - Kinshasa</h3>
+                <p>Informações sobre a capital e maior cidade da RDC, centro político e econômico com grandes oportunidades missionárias urbanas.</p>
+                <a href="pages/congo-kinshasa.html">
+                    <span>Explorar Região</span>
+                    <span>→</span>
+                </a>
+            </div>
+
+            <div class="location-card">
+                <img src="images/icon-mozambique.png" alt="Moçambique">
+                <h3>Moçambique - Cidade da Beira</h3>
+                <p>Dados sobre a Beira e suas aldeias circunvizinhas, incluindo desafios pós-desastres naturais e oportunidades de reconstrução.</p>
+                <a href="pages/mocambique-beira.html">
+                    <span>Explorar Região</span>
+                    <span>→</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="info-grid">
+            <div class="info-card">
+                <h4>🎯 Objetivo</h4>
+                <p>Fornecer informações estratégicas para implantação de igrejas e ministérios cristãos na África.</p>
+            </div>
+            <div class="info-card">
+                <h4>📊 Dados Atualizados</h4>
+                <p>Informações demográficas, econômicas e culturais baseadas em fontes confiáveis e atuais.</p>
+            </div>
+            <div class="info-card">
+                <h4>🤝 Parcerias Locais</h4>
+                <p>Contatos de autoridades, igrejas estabelecidas e organizações que podem apoiar o trabalho missionário.</p>
+            </div>
+            <div class="info-card">
+                <h4>📋 Documentação</h4>
+                <p>Requisitos legais, vistos e documentos necessários para atividades missionárias em cada região.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Adiciona interatividade aos cards
+        document.querySelectorAll('.location-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Adiciona efeito de loading suave
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
+

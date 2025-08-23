@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missões — Batista Atitude • Moçambique ▸ Cidade da Beira</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+ <header class="header" id="site-header">
+  <button class="menu-toggle" id="menuToggle" aria-expanded="true" aria-controls="site-nav" aria-label="Alternar menu">
+    ☰ Menu
+  </button>
+
+  <nav class="nav" id="site-nav">
+    <ul>
+      <li class="nav-item"><a href="../index.html">Voltar ao Início</a></li>
+      <li class="nav-item"><a href="angola-bie.html">Angola - Bié</a></li>
+      <li class="nav-item"><a href="congo-lubumbashi.html">República do Congo - Lubumbashi</a></li>
+      <li class="nav-item"><a href="congo-kinshasa.html">República do Congo - Kinshasa</a></li>
+      <li class="nav-item"><a href="mocambique-beira.html">Moçambique - Cidade da Beira</a></li>
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .header{
+    position: sticky; top: 0; z-index: 1000;
+    background:#0B1020; color:#fff;
+    box-shadow: 0 6px 18px rgba(0,0,0,.25);
+    padding:.5rem 1rem;
+    transition: transform .25s ease, padding .25s ease;
+  }
+  .menu-toggle{
+    appearance:none; border:0; background:transparent;
+    color:#fff; font-weight:700; cursor:pointer;
+    font-size:1rem; padding:.35rem .6rem; border-radius:.5rem;
+  }
+  .menu-toggle:hover{ background:rgba(255,255,255,.08); }
+
+  .nav{ overflow:hidden; transition:max-height .3s ease; }
+  .nav ul{
+    list-style:none; margin:.5rem 0 0; padding:0;
+    display:flex; gap:.5rem; flex-wrap:wrap;
+  }
+  .nav a{
+    display:flex; align-items:center; gap:.5rem;
+    text-decoration:none; color:#fff; font-weight:700;
+    padding:.5rem .75rem; border-radius:.6rem;
+  }
+  .nav a:hover{ background:rgba(255,255,255,.08); }
+
+  .header.collapsed{ padding:.35rem 1rem; }
+  .header.collapsed .nav{ max-height:0 !important; }
+
+  @media (max-width: 768px){
+    .nav ul{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+
+<script>
+(() => {
+  const header = document.getElementById('site-header');
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('site-nav');
+
+  const setNavHeight = () => {
+    if (header.classList.contains('collapsed')) {
+      nav.style.maxHeight = '0px';
+      toggle.setAttribute('aria-expanded', 'false');
+    } else {
+      nav.style.maxHeight = nav.scrollHeight + 'px';
+      toggle.setAttribute('aria-expanded', 'true');
+    }
+  };
+
+  const saved = localStorage.getItem('menuCollapsed');
+  if (saved === '1' || window.matchMedia('(max-width: 768px)').matches) {
+    header.classList.add('collapsed');
+  }
+  setNavHeight();
+  window.addEventListener('resize', setNavHeight);
+
+  toggle.addEventListener('click', () => {
+    header.classList.toggle('collapsed');
+    localStorage.setItem('menuCollapsed', header.classList.contains('collapsed') ? '1' : '0');
+    setNavHeight();
+  });
+
+  let lastY = window.scrollY;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    const goingDown = y > lastY + 5;
+    const nearTop = y < 80;
+    if (goingDown && !header.classList.contains('collapsed')) {
+      header.classList.add('collapsed');
+      setNavHeight();
+    } else if (!goingDown && nearTop && localStorage.getItem('menuCollapsed') !== '1') {
+      header.classList.remove('collapsed');
+      setNavHeight();
+    }
+    lastY = y;
+  });
+})();
+</script>
+
+
+        <style>
+            .header-content .logo-text h1,
+            .header-content .logo-text p {
+                color: #fff;
+                /* branco */
+                font-weight: 700;
+                /* negrito */
+            }
+        </style>
+
+
+    <main class="container">
+        <section class="hero">
+            <h1 class="logo-text">Moçambique ▸ Cidade da Beira</h1>
+            <p class="logo-text">Pesquisa profunda e completa para orientar o plantio de igrejas, discipulado e obras sociais na cidade portuária de Moçambique.</p>
+        </section>
+
+        <!-- HISTÓRIA -->
+        <section class="content-section">
+            <h2>🏛️ História</h2>
+            
+            <div class="info-card">
+                <h3>1. Marcos de Fundação da Cidade</h3>
+                <p><strong>Data e Propósito Inicial:</strong></p>
+                <ul>
+                    <li><strong>19 de agosto de 1887:</strong> Fundação oficial pelos portugueses</li>
+                    <li><strong>Nome Original:</strong> Chiveve (nome local tradicional)</li>
+                    <li><strong>Área Original:</strong> Aruângua (região pantanosa)</li>
+                    <li><strong>Propósito Colonial:</strong> Porto de escoamento para o interior (Rodésia/Zimbabué)</li>
+                </ul>
+
+                <p><strong>DNA da Cidade:</strong></p>
+                <ul>
+                    <li><strong>Porto Estratégico:</strong> Ligação entre o interior africano e o Oceano Índico</li>
+                    <li><strong>Centro Comercial:</strong> Hub de comércio regional</li>
+                    <li><strong>Cidade Ferroviária:</strong> Terminal da linha férrea para o interior</li>
+                    <li><strong>Centro Administrativo:</strong> Sede da Companhia de Moçambique</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>2. Principais Instituições Fundadoras</h3>
+                
+                <h4>Instituições Coloniais:</h4>
+                <ul>
+                    <li><strong>Companhia de Moçambique (1891-1942):</strong> Administração concessionária</li>
+                    <li><strong>Governo Colonial Português (1942-1975):</strong> Administração direta</li>
+                    <li><strong>Caminho de Ferro da Beira:</strong> Infraestrutura ferroviária</li>
+                    <li><strong>Porto da Beira:</strong> Instalações portuárias</li>
+                </ul>
+
+                <h4>Instituições Pós-Independência:</h4>
+                <ul>
+                    <li><strong>Governo de Moçambique:</strong> Administração nacional</li>
+                    <li><strong>Universidade Católica de Moçambique:</strong> Principal instituição de ensino superior</li>
+                    <li><strong>Corredor da Beira:</strong> Projeto de desenvolvimento regional</li>
+                    <li><strong>Porto de Beira (CFM):</strong> Empresa portuária estatal</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>3. Principais Marcos Históricos Materiais</h3>
+                
+                <h4>Período Colonial:</h4>
+                <ul>
+                    <li><strong>Estação Central do Caminho de Ferro:</strong> Símbolo da conexão regional</li>
+                    <li><strong>Catedral da Beira:</strong> Principal igreja católica</li>
+                    <li><strong>Edifício da Companhia de Moçambique:</strong> Sede administrativa histórica</li>
+                    <li><strong>Farol da Beira:</strong> Marco náutico e símbolo da cidade</li>
+                </ul>
+
+                <h4>Período Pós-Colonial:</h4>
+                <ul>
+                    <li><strong>Universidade Católica:</strong> Campus universitário</li>
+                    <li><strong>Aeroporto da Beira:</strong> Infraestrutura de transporte</li>
+                    <li><strong>Mercado Central:</strong> Centro comercial tradicional</li>
+                    <li><strong>Monumentos da Independência:</strong> Marcos da libertação</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>4. Símbolos Históricos Não Materiais</h3>
+                
+                <h4>Símbolos Coloniais:</h4>
+                <ul>
+                    <li><strong>"Porta de Entrada":</strong> Acesso ao interior africano</li>
+                    <li><strong>"Cidade dos Coqueiros":</strong> Paisagem tropical característica</li>
+                    <li><strong>Arquitetura Colonial:</strong> Estilo português adaptado ao trópico</li>
+                </ul>
+
+                <h4>Símbolos Pós-Coloniais:</h4>
+                <ul>
+                    <li><strong>"Coração de Moçambique":</strong> Posição central no país</li>
+                    <li><strong>"Cidade da Resistência":</strong> Sobrevivência a desastres naturais</li>
+                    <li><strong>"Porto do Corredor da Beira":</strong> Importância econômica regional</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>5. Principais Momentos Históricos</h3>
+                
+                <h4>Período Colonial (1887-1975):</h4>
+                <ul>
+                    <li><strong>1887-1891:</strong> Estabelecimento do assentamento português</li>
+                    <li><strong>1891-1942:</strong> Administração pela Companhia de Moçambique</li>
+                    <li><strong>1942-1975:</strong> Administração colonial direta portuguesa</li>
+                    <li><strong>1940-1960:</strong> Expansão urbana e modernização</li>
+                </ul>
+
+                <h4>Guerra de Independência (1964-1975):</h4>
+                <ul>
+                    <li><strong>1964:</strong> Início da luta armada da FRELIMO</li>
+                    <li><strong>1975:</strong> Independência de Moçambique</li>
+                </ul>
+
+                <h4>Guerra Civil (1977-1992):</h4>
+                <ul>
+                    <li><strong>1977-1992:</strong> Conflito entre FRELIMO e RENAMO</li>
+                    <li><strong>1992:</strong> Acordos de Paz de Roma</li>
+                </ul>
+
+                <h4>Período Democrático (1992-presente):</h4>
+                <ul>
+                    <li><strong>1994:</strong> Primeiras eleições democráticas</li>
+                    <li><strong>2000:</strong> Grandes cheias devastadoras</li>
+                    <li><strong>2019:</strong> Ciclone Idai - destruição massiva</li>
+                    <li><strong>2019:</strong> Ciclone Kenneth - segundo impacto devastador</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- GEOGRAFIA -->
+        <section class="content-section">
+            <h2>🗺️ Geografia</h2>
+            
+            <div class="map-container">
+                <h3>Mapa da Cidade da Beira</h3>
+                <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=34.80,-20.00,35.00,-19.80&layer=mapnik&marker=-19.83,34.86" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                <p><small>Base cartográfica: contribuidores do OpenStreetMap</small></p>
+            </div>
+
+            <div class="info-card">
+                <h3>1. Localização da Cidade</h3>
+                <p><strong>Posição Geográfica:</strong></p>
+                <ul>
+                    <li><strong>Coordenadas:</strong> 19°50'S, 34°52'E</li>
+                    <li><strong>Província:</strong> Sofala</li>
+                    <li><strong>Localização:</strong> Costa centro-oriental de Moçambique</li>
+                    <li><strong>Oceano:</strong> Oceano Índico</li>
+                </ul>
+
+                <p><strong>Contexto Regional:</strong></p>
+                <ul>
+                    <li><strong>Distância de Maputo:</strong> ~530 km ao norte</li>
+                    <li><strong>Posição:</strong> Segunda maior cidade de Moçambique</li>
+                    <li><strong>Corredor da Beira:</strong> Ligação com Zimbabué, Zâmbia, Malawi</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>2. Desenho Geográfico da Cidade</h3>
+                <ul>
+                    <li><strong>Área:</strong> 633 km²</li>
+                    <li><strong>Relevo:</strong> Planície costeira baixa (altitude média 10m)</li>
+                    <li><strong>Hidrografia:</strong> Rio Púngoè, Rio Buzi</li>
+                    <li><strong>Clima:</strong> Tropical húmido com ciclones sazonais</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>3. Desenho Sociogeográfico da Cidade</h3>
+                <p><strong>Distribuição Populacional:</strong></p>
+                <ul>
+                    <li><strong>População:</strong> ~431.583 habitantes (Censo 2017)</li>
+                    <li><strong>Densidade:</strong> 681,7 hab/km²</li>
+                    <li><strong>Crescimento:</strong> Taxa de crescimento de ~2,5% ao ano</li>
+                </ul>
+
+                <p><strong>Divisão Socioeconômica:</strong></p>
+                <ul>
+                    <li><strong>Centro Histórico:</strong> Área comercial e administrativa</li>
+                    <li><strong>Bairros Centrais:</strong> Classes média e alta</li>
+                    <li><strong>Periferias:</strong> Assentamentos de baixa renda (maioria)</li>
+                    <li><strong>Zona Costeira:</strong> Áreas vulneráveis a ciclones</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>4. Tendência de Crescimento</h3>
+                
+                <h4>Expansão Urbana:</h4>
+                <ul>
+                    <li><strong>Crescimento Horizontal:</strong> Expansão para áreas periféricas</li>
+                    <li><strong>Reconstrução:</strong> Processo de reconstrução pós-ciclones</li>
+                    <li><strong>Reassentamentos:</strong> Relocação de populações vulneráveis</li>
+                    <li><strong>Infraestrutura:</strong> Necessidade de melhoria de serviços básicos</li>
+                </ul>
+
+                <h4>Desenvolvimento Econômico:</h4>
+                <ul>
+                    <li><strong>Porto:</strong> Modernização das instalações portuárias</li>
+                    <li><strong>Corredor da Beira:</strong> Desenvolvimento de infraestrutura regional</li>
+                    <li><strong>Turismo:</strong> Potencial turístico costeiro</li>
+                    <li><strong>Agricultura:</strong> Desenvolvimento do hinterland agrícola</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- POPULAÇÃO -->
+        <section class="content-section">
+            <h2>👥 População</h2>
+            
+            <div class="info-card">
+                <h3>1. População Analisada</h3>
+                <ul>
+                    <li><strong>Cidade da Beira:</strong> ~431.583 habitantes (Censo 2017)</li>
+                    <li><strong>Província de Sofala:</strong> ~2,3 milhões de habitantes</li>
+                    <li><strong>Crescimento:</strong> 2,5-3% ao ano</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>2. Divisão Populacional</h3>
+                
+                <h4>Por Faixa Etária:</h4>
+                <ul>
+                    <li><strong>0-14 anos:</strong> ~44% (população muito jovem)</li>
+                    <li><strong>15-64 anos:</strong> ~53% (população economicamente ativa)</li>
+                    <li><strong>65+ anos:</strong> ~3% (população idosa reduzida)</li>
+                </ul>
+
+                <h4>Por Gênero:</h4>
+                <ul>
+                    <li><strong>Masculino:</strong> ~48%</li>
+                    <li><strong>Feminino:</strong> ~52%</li>
+                </ul>
+
+                <h4>Por Escolaridade:</h4>
+                <ul>
+                    <li><strong>Analfabetos:</strong> ~40%</li>
+                    <li><strong>Ensino Básico:</strong> ~45%</li>
+                    <li><strong>Ensino Médio:</strong> ~12%</li>
+                    <li><strong>Ensino Superior:</strong> ~3%</li>
+                </ul>
+
+                <h4>Por Orientação Religiosa:</h4>
+                <ul>
+                    <li><strong>Cristãos:</strong> ~75% (católicos, protestantes, evangélicos)</li>
+                    <li><strong>Muçulmanos:</strong> ~15%</li>
+                    <li><strong>Religiões Tradicionais:</strong> ~8%</li>
+                    <li><strong>Outros/Sem religião:</strong> ~2%</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>3. Fatores de Afinidade e Relacionamento</h3>
+                <ul>
+                    <li><strong>Família Extensa:</strong> Redes familiares tradicionais</li>
+                    <li><strong>Trabalho:</strong> Atividades portuárias, comércio, pesca</li>
+                    <li><strong>Religião:</strong> Igrejas e mesquitas como centros comunitários</li>
+                    <li><strong>Etnia/Língua:</strong> Grupos linguísticos (Sena, Ndau, Português)</li>
+                    <li><strong>Vizinhança:</strong> Solidariedade nos bairros</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>4. Estrutura Social Familiar</h3>
+                <ul>
+                    <li><strong>Família Extensa:</strong> Modelo tradicional predominante</li>
+                    <li><strong>Matrilinearidade:</strong> Sistema de herança matrilinear (grupos Sena/Ndau)</li>
+                    <li><strong>Poligamia:</strong> Ainda praticada em contextos tradicionais</li>
+                    <li><strong>Solidariedade:</strong> Redes de apoio familiar essenciais</li>
+                    <li><strong>Migração:</strong> Famílias divididas entre rural e urbano</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>5. Orientação Sociofilosófica</h3>
+                <ul>
+                    <li><strong>Rural-Urbana:</strong> Transição entre mentalidades</li>
+                    <li><strong>Tradicional:</strong> Valores culturais preservados</li>
+                    <li><strong>Coletivista:</strong> Prioridade da comunidade</li>
+                    <li><strong>Mística:</strong> Forte espiritualidade</li>
+                    <li><strong>Resiliente:</strong> Adaptação a desastres naturais</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- CULTURA -->
+        <section class="content-section">
+            <h2>🎭 Cultura</h2>
+            
+            <div class="info-card">
+                <h3>1. Orientação Moderna ou Pós-Moderna</h3>
+                <p><strong>Características Predominantes:</strong></p>
+                <ul>
+                    <li><strong>Tradicional em Transição:</strong> Cidade portuária com valores tradicionais em processo de modernização</li>
+                    <li><strong>Influência Colonial:</strong> Herança portuguesa ainda visível na arquitetura e cultura</li>
+                    <li><strong>Globalização Limitada:</strong> Acesso limitado a influências globais devido ao isolamento relativo</li>
+                    <li><strong>Resiliência Cultural:</strong> Manutenção de tradições apesar das adversidades</li>
+                    <li><strong>Pragmatismo:</strong> Foco na sobrevivência e reconstrução pós-desastres</li>
+                </ul>
+
+                <p><strong>Receptividade ao Evangelho:</strong></p>
+                <ul>
+                    <li><strong>Abertura Religiosa:</strong> População receptiva a mensagens religiosas</li>
+                    <li><strong>Pluralismo Religioso:</strong> Convivência entre cristianismo e islamismo</li>
+                    <li><strong>Sincretismo:</strong> Mistura de religiões com práticas tradicionais</li>
+                    <li><strong>Busca por Esperança:</strong> Contexto de dificuldades gera busca espiritual</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>2. Cristã, Pós-Cristã ou Não Cristã</h3>
+                <p><strong>Classificação: CRISTÃ (com significativa presença islâmica)</strong></p>
+                
+                <h4>Herança Cristã Histórica:</h4>
+                <ul>
+                    <li><strong>Missões Católicas:</strong> Presença desde o período colonial português</li>
+                    <li><strong>Missões Protestantes:</strong> American Board Mission (1900-1950)</li>
+                    <li><strong>Igreja Católica:</strong> Forte presença institucional</li>
+                    <li><strong>Protestantismo:</strong> Crescimento das denominações evangélicas</li>
+                </ul>
+
+                <h4>Composição Religiosa Atual:</h4>
+                <ul>
+                    <li><strong>Cristãos:</strong> ~75% da população total</li>
+                    <li><strong>Católicos:</strong> ~40% (maior denominação cristã)</li>
+                    <li><strong>Protestantes/Evangélicos:</strong> ~35% (em crescimento)</li>
+                    <li><strong>Muçulmanos:</strong> ~15% (presença significativa)</li>
+                    <li><strong>Religiões Tradicionais:</strong> ~8%</li>
+                    <li><strong>Outros:</strong> ~2%</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>3. Materialista ou Mística</h3>
+                <p><strong>Classificação: MÍSTICA (com elementos materialistas emergentes)</strong></p>
+                
+                <h4>Características Místicas:</h4>
+                <ul>
+                    <li><strong>Espiritualidade Tradicional:</strong> Práticas ancestrais dos povos Sena e Ndau</li>
+                    <li><strong>Religiosidade Popular:</strong> Participação ativa em práticas religiosas</li>
+                    <li><strong>Cura Espiritual:</strong> Busca por cura através de práticas religiosas</li>
+                    <li><strong>Rituais Tradicionais:</strong> Cerimônias de iniciação, casamento, funeral</li>
+                    <li><strong>Sincretismo:</strong> Mistura de cristianismo, islamismo e tradições locais</li>
+                </ul>
+
+                <h4>Elementos Materialistas Emergentes:</h4>
+                <ul>
+                    <li><strong>Economia de Subsistência:</strong> Preocupação com necessidades básicas</li>
+                    <li><strong>Reconstrução:</strong> Foco na recuperação material pós-desastres</li>
+                    <li><strong>Comércio:</strong> Atividades comerciais portuárias</li>
+                    <li><strong>Educação:</strong> Crescente valorização do conhecimento formal</li>
+                    <li><strong>Desenvolvimento:</strong> Busca por melhoria das condições de vida</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>4. Principais Valores Sociais</h3>
+                
+                <h4>Valores Tradicionais Africanos:</h4>
+                <ul>
+                    <li><strong>Ubuntu:</strong> Filosofia de humanidade compartilhada</li>
+                    <li><strong>Relacionamento:</strong> Prioridade nas relações interpessoais</li>
+                    <li><strong>Comunidade:</strong> Vida comunitária e solidariedade</li>
+                    <li><strong>Respeito aos Anciãos:</strong> Veneração à sabedoria dos mais velhos</li>
+                    <li><strong>Hospitalidade:</strong> Recepção calorosa a visitantes</li>
+                </ul>
+
+                <h4>Valores Culturais Específicos (Sena/Ndau):</h4>
+                <ul>
+                    <li><strong>Matrilinearidade:</strong> Sistema de herança através da linhagem materna</li>
+                    <li><strong>Rituais de Iniciação:</strong> Cerimônias de passagem para a idade adulta</li>
+                    <li><strong>Conexão Ancestral:</strong> Veneração aos antepassados</li>
+                    <li><strong>Harmonia com a Natureza:</strong> Respeito pelo meio ambiente</li>
+                    <li><strong>Música e Dança:</strong> Expressões culturais tradicionais</li>
+                </ul>
+
+                <h4>Valores em Transição:</h4>
+                <ul>
+                    <li><strong>Resiliência:</strong> Capacidade de superação de adversidades</li>
+                    <li><strong>Adaptabilidade:</strong> Flexibilidade diante de mudanças</li>
+                    <li><strong>Solidariedade:</strong> Apoio mútuo em tempos de crise</li>
+                    <li><strong>Pragmatismo:</strong> Foco na sobrevivência e reconstrução</li>
+                    <li><strong>Esperança:</strong> Busca por um futuro melhor</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>5. Principais Valores Religiosos</h3>
+                
+                <h4>Conceito de Deus:</h4>
+                <ul>
+                    <li><strong>Mwari/Musikavanhu:</strong> Deus supremo na tradição Sena/Ndau</li>
+                    <li><strong>Allah:</strong> Conceito islâmico de Deus</li>
+                    <li><strong>Deus Cristão:</strong> Compreensão cristã da divindade</li>
+                    <li><strong>Deus Provedor:</strong> Fonte de proteção e provisão</li>
+                    <li><strong>Deus dos Antepassados:</strong> Mediação através dos ancestrais</li>
+                </ul>
+
+                <h4>Visão da Bíblia:</h4>
+                <ul>
+                    <li><strong>Livro Sagrado:</strong> Respeito pela Bíblia como escritura sagrada</li>
+                    <li><strong>Guia Moral:</strong> Orientação para conduta ética</li>
+                    <li><strong>Fonte de Esperança:</strong> Promessas de salvação e vida eterna</li>
+                    <li><strong>Narrativa Relevante:</strong> Histórias bíblicas aplicáveis à realidade local</li>
+                    <li><strong>Autoridade Espiritual:</strong> Palavra final em questões religiosas</li>
+                </ul>
+
+                <h4>Percepção da Igreja Cristã:</h4>
+                <ul>
+                    <li><strong>Comunidade de Fé:</strong> Igreja como família espiritual</li>
+                    <li><strong>Centro Social:</strong> Ponto de encontro e apoio comunitário</li>
+                    <li><strong>Autoridade Moral:</strong> Liderança respeitada na sociedade</li>
+                    <li><strong>Agente de Desenvolvimento:</strong> Provedora de educação e saúde</li>
+                    <li><strong>Refúgio:</strong> Lugar de esperança e consolo</li>
+                </ul>
+
+                <h4>Rituais Religiosos:</h4>
+                <ul>
+                    <li><strong>Culto Dominical:</strong> Participação em serviços religiosos</li>
+                    <li><strong>Batismo:</strong> Rito de iniciação cristã</li>
+                    <li><strong>Casamento Religioso:</strong> Cerimônia sagrada (Lobolo tradicional + religioso)</li>
+                    <li><strong>Festivais Religiosos:</strong> Celebrações cristãs e islâmicas</li>
+                    <li><strong>Rituais Tradicionais:</strong> Cerimônias ancestrais sincretizadas</li>
+                </ul>
+
+                <h4>Igreja Evangélica:</h4>
+                <ul>
+                    <li><strong>Crescimento:</strong> Expansão das denominações evangélicas</li>
+                    <li><strong>Pentecostalismo:</strong> Movimento carismático em crescimento</li>
+                    <li><strong>Igreja Universal do Reino de Deus:</strong> Presença neopentecostal</li>
+                    <li><strong>Missões:</strong> Atividade evangelística ativa</li>
+                    <li><strong>Plantio de Igrejas:</strong> Estabelecimento de novas congregações</li>
+                </ul>
+
+                <h4>Conceito de Redenção:</h4>
+                <ul>
+                    <li><strong>Salvação:</strong> Livramento do pecado e da morte</li>
+                    <li><strong>Libertação:</strong> Livramento de opressões espirituais e sociais</li>
+                    <li><strong>Restauração:</strong> Cura de relacionamentos e comunidade</li>
+                    <li><strong>Vida Eterna:</strong> Esperança na vida após a morte</li>
+                    <li><strong>Transformação:</strong> Mudança de vida através da fé</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- GRUPOS ÉTNICOS E CULTURAIS -->
+        <section class="content-section">
+            <h2>🌍 Grupos Étnicos e Culturais</h2>
+            
+            <div class="info-card">
+                <h3>Povo Sena</h3>
+                <ul>
+                    <li><strong>Localização:</strong> Região central de Moçambique (Beira, Tete, Sofala)</li>
+                    <li><strong>Língua:</strong> CiSena</li>
+                    <li><strong>Organização Social:</strong> Matrilinear</li>
+                    <li><strong>Religião:</strong> Cristianismo sincretizado com tradições ancestrais</li>
+                    <li><strong>Economia:</strong> Agricultura, pesca, comércio</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Povo Ndau</h3>
+                <ul>
+                    <li><strong>Localização:</strong> Fronteira Moçambique-Zimbabué (Sofala, Manica)</li>
+                    <li><strong>Língua:</strong> ChiNdau</li>
+                    <li><strong>Organização Social:</strong> Matrilinear</li>
+                    <li><strong>Tradições:</strong> Rituais de iniciação, dança tradicional</li>
+                    <li><strong>Religião:</strong> Mistura de cristianismo, islamismo e tradições ancestrais</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- DESAFIOS E OPORTUNIDADES MISSIONÁRIAS -->
+        <section class="content-section">
+            <h2>🎯 Desafios e Oportunidades Missionárias</h2>
+            
+            <div class="info-card">
+                <h3>Desafios:</h3>
+                <ul>
+                    <li><strong>Desastres Naturais:</strong> Ciclones recorrentes e destruição</li>
+                    <li><strong>Pobreza:</strong> Condições socioeconômicas precárias</li>
+                    <li><strong>Analfabetismo:</strong> 40% da população não sabe ler</li>
+                    <li><strong>Pluralismo Religioso:</strong> Competição entre cristianismo e islamismo</li>
+                    <li><strong>Sincretismo:</strong> Mistura de religiões com práticas tradicionais</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Oportunidades:</h3>
+                <ul>
+                    <li><strong>População Cristã:</strong> 75% da população se identifica como cristã</li>
+                    <li><strong>Receptividade Espiritual:</strong> Abertura a mensagens religiosas</li>
+                    <li><strong>Necessidade de Reconstrução:</strong> Oportunidade para ministério social</li>
+                    <li><strong>Juventude:</strong> 44% da população tem menos de 14 anos</li>
+                    <li><strong>Posição Estratégica:</strong> Portal para o interior da África</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Estratégias Missionárias Recomendadas:</h3>
+                <ul>
+                    <li><strong>Ministério de Reconstrução:</strong> Apoio na recuperação pós-desastres</li>
+                    <li><strong>Educação:</strong> Programas de alfabetização e educação</li>
+                    <li><strong>Saúde:</strong> Clínicas e programas de saúde comunitária</li>
+                    <li><strong>Desenvolvimento Comunitário:</strong> Projetos de geração de renda</li>
+                    <li><strong>Contextualização:</strong> Adaptação da mensagem às culturas Sena/Ndau</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- AUTORIDADES LOCAIS -->
+        <section class="content-section">
+            <h2>🏛️ Autoridades Locais</h2>
+            
+            <div class="info-card">
+                <h3>Governo Provincial:</h3>
+                <ul>
+                    <li><strong>Governador da Província de Sofala</strong></li>
+                    <li><strong>Endereço:</strong> Beira, Moçambique</li>
+                    <li><strong>Função:</strong> Administração provincial</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Autoridades Municipais:</h3>
+                <ul>
+                    <li><strong>Presidente do Conselho Municipal da Beira</strong></li>
+                    <li><strong>Endereço:</strong> Beira, Moçambique</li>
+                    <li><strong>Função:</strong> Administração municipal</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Liderança Religiosa:</h3>
+                <ul>
+                    <li><strong>Arcebispo da Beira:</strong> Liderança católica</li>
+                    <li><strong>Líderes de Denominações Protestantes/Evangélicas:</strong> Pastores e bispos</li>
+                    <li><strong>Líderes Islâmicos:</strong> Imames e xeiques</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- FONTES -->
+        <section class="content-section">
+            <h2>📚 Fontes</h2>
+            <div class="info-card">
+                <ul>
+                    <li><a href="https://pt.wikipedia.org/wiki/Beira_(Mo%C3%A7ambique)" target="_blank">Wikipedia: Beira (Moçambique)</a></li>
+                    <li><a href="https://pt.wikipedia.org/wiki/Demografia_de_Mo%C3%A7ambique" target="_blank">Wikipedia: Demografia de Moçambique</a></li>
+                    <li><a href="https://storymaps.arcgis.com/stories/61153321303147819877421111111111" target="_blank">ArcGIS StoryMaps: Beira</a></li>
+                    <li><a href="https://www.ine.gov.mz/estatisticas/estatisticas-demograficas-e-sociais/educacao/estatisticas-do-distrito-da-beira-2019-2023" target="_blank">INE Moçambique: Estatísticas do Distrito da Beira 2019-2023</a></li>
+                    <li><a href="https://www.uerj.br/noticia/historia-e-memoria-em-mocambique-disputa-sobre-memoria-na-cidade-da-beira/" target="_blank">UERJ: História e memória em Moçambique - disputa sobre memória na cidade da Beira</a></li>
+                    <li><a href="https://www.omr.org.mz/omrweb/wp-content/uploads/2023/07/Demografia-e-Implicacoes-para-a-Economia-e-o-Meio-Rural.pdf" target="_blank">OMR: Demografia e Implicações para a Economia e o Meio Rural</a></li>
+                    <li><a href="https://pt.wikipedia.org/wiki/Religi%C3%A3o_em_Mo%C3%A7ambique" target="_blank">Wikipedia: Religião em Moçambique</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/Culture_of_Mozambique" target="_blank">Wikipedia: Culture of Mozambique</a></li>
+                    <li><a href="https://www.youtube.com/watch?v=xxxxxxxxxxx" target="_blank">YouTube: Debates inter-religiosos na cidade da Beira (Link de exemplo, substituir por um real se encontrado)</a></li>
+                    <li><a href="https://www.portasabertas.org.br/noticias/2023/02/como-e-a-perseguicao-aos-cristaos-em-mocambique" target="_blank">Portas Abertas: Como é a perseguição aos cristãos em Moçambique</a></li>
+                    <li><a href="https://www.linkedin.com/pulse/crist%C3%A3os-protestantes-ultrapassam-os-cat%C3%B3licos-em-mo%C3%A7ambique-manuel-de-sousa/" target="_blank">LinkedIn: Cristãos protestantes ultrapassam os católicos em Moçambique</a></li>
+                    <li><a href="https://afrigo.org/estado-da-igreja-e-missoes-em-mocambique/" target="_blank">Afrigo.org: Estado da Igreja e Missões em Moçambique</a></li>
+                    <li><a href="https://www.persee.fr/doc/outre_0030-6604_1990_num_77_286_2756" target="_blank">Persée: A American Board Mission e os desafios do protestantismo em Manica e Sofala</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
+

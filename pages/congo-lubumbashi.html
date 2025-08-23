@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missões — Batista Atitude • República do Congo ▸ Lubumbashi</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+  <header class="header" id="site-header">
+  <button class="menu-toggle" id="menuToggle" aria-expanded="true" aria-controls="site-nav" aria-label="Alternar menu">
+    ☰ Menu
+  </button>
+
+  <nav class="nav" id="site-nav">
+    <ul>
+      <li class="nav-item"><a href="../index.html">Voltar ao Início</a></li>
+      <li class="nav-item"><a href="angola-bie.html">Angola - Bié</a></li>
+      <li class="nav-item"><a href="congo-lubumbashi.html">República do Congo - Lubumbashi</a></li>
+      <li class="nav-item"><a href="congo-kinshasa.html">República do Congo - Kinshasa</a></li>
+      <li class="nav-item"><a href="mocambique-beira.html">Moçambique - Cidade da Beira</a></li>
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .header{
+    position: sticky; top: 0; z-index: 1000;
+    background:#0B1020; color:#fff;
+    box-shadow: 0 6px 18px rgba(0,0,0,.25);
+    padding:.5rem 1rem;
+    transition: transform .25s ease, padding .25s ease;
+  }
+  .menu-toggle{
+    appearance:none; border:0; background:transparent;
+    color:#fff; font-weight:700; cursor:pointer;
+    font-size:1rem; padding:.35rem .6rem; border-radius:.5rem;
+  }
+  .menu-toggle:hover{ background:rgba(255,255,255,.08); }
+
+  .nav{ overflow:hidden; transition:max-height .3s ease; }
+  .nav ul{
+    list-style:none; margin:.5rem 0 0; padding:0;
+    display:flex; gap:.5rem; flex-wrap:wrap;
+  }
+  .nav a{
+    display:flex; align-items:center; gap:.5rem;
+    text-decoration:none; color:#fff; font-weight:700;
+    padding:.5rem .75rem; border-radius:.6rem;
+  }
+  .nav a:hover{ background:rgba(255,255,255,.08); }
+
+  .header.collapsed{ padding:.35rem 1rem; }
+  .header.collapsed .nav{ max-height:0 !important; }
+
+  @media (max-width: 768px){
+    .nav ul{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+
+<script>
+(() => {
+  const header = document.getElementById('site-header');
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('site-nav');
+
+  const setNavHeight = () => {
+    if (header.classList.contains('collapsed')) {
+      nav.style.maxHeight = '0px';
+      toggle.setAttribute('aria-expanded', 'false');
+    } else {
+      nav.style.maxHeight = nav.scrollHeight + 'px';
+      toggle.setAttribute('aria-expanded', 'true');
+    }
+  };
+
+  const saved = localStorage.getItem('menuCollapsed');
+  if (saved === '1' || window.matchMedia('(max-width: 768px)').matches) {
+    header.classList.add('collapsed');
+  }
+  setNavHeight();
+  window.addEventListener('resize', setNavHeight);
+
+  toggle.addEventListener('click', () => {
+    header.classList.toggle('collapsed');
+    localStorage.setItem('menuCollapsed', header.classList.contains('collapsed') ? '1' : '0');
+    setNavHeight();
+  });
+
+  let lastY = window.scrollY;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    const goingDown = y > lastY + 5;
+    const nearTop = y < 80;
+    if (goingDown && !header.classList.contains('collapsed')) {
+      header.classList.add('collapsed');
+      setNavHeight();
+    } else if (!goingDown && nearTop && localStorage.getItem('menuCollapsed') !== '1') {
+      header.classList.remove('collapsed');
+      setNavHeight();
+    }
+    lastY = y;
+  });
+})();
+</script>
+
+
+        <style>
+            .header-content .logo-text h1,
+            .header-content .logo-text p {
+                color: #fff;
+                /* branco */
+                font-weight: 700;
+                /* negrito */
+            }
+        </style>
+
+    <main class="container">
+        <section class="hero">
+            <h1 class="logo-text">República do Congo ▸ Lubumbashi</h1>
+            <p class="logo-text">Pesquisa profunda e completa para orientar o plantio de igrejas, discipulado e obras sociais na capital econômica do Congo.</p>
+        </section>
+
+        <!-- HISTÓRIA -->
+        <section class="content-section">
+            <h2>🏛️ História</h2>
+            
+            <div class="info-card">
+                <h3>1. Marcos de Fundação da Cidade</h3>
+                <p><strong>Data e Propósito Inicial:</strong></p>
+                <ul>
+                    <li><strong>1910:</strong> Fundação oficial por colonos belgas</li>
+                    <li><strong>Nome Original:</strong> Elisabethville (até 1966, em homenagem à Rainha Elisabeth da Bélgica)</li>
+                    <li><strong>1966:</strong> Renomeada para Lubumbashi após a independência do Congo</li>
+                    <li><strong>Propósito Colonial:</strong> Centro de exploração mineira (cobre e cobalto)</li>
+                </ul>
+
+                <p><strong>DNA da Cidade:</strong></p>
+                <ul>
+                    <li><strong>Cidade Mineira:</strong> Construída para exploração de recursos minerais</li>
+                    <li><strong>Centro Industrial:</strong> Desenvolvimento de indústrias de transformação</li>
+                    <li><strong>Hub Ferroviário:</strong> Ponto de conexão ferroviária regional</li>
+                    <li><strong>Capital Provincial:</strong> Sede administrativa da província de Katanga/Haut-Katanga</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>2. Principais Instituições Fundadoras</h3>
+                
+                <h4>Instituições Coloniais Belgas:</h4>
+                <ul>
+                    <li><strong>Union Minière du Haut-Katanga (UMHK):</strong> Companhia mineira principal</li>
+                    <li><strong>Administração Colonial Belga:</strong> Estrutura governamental</li>
+                    <li><strong>Missões Católicas:</strong> Evangelização e educação</li>
+                    <li><strong>Companhia do Caminho de Ferro:</strong> Infraestrutura de transporte</li>
+                </ul>
+
+                <h4>Instituições Pós-Independência:</h4>
+                <ul>
+                    <li><strong>Gécamines:</strong> Sucessora estatal da UMHK</li>
+                    <li><strong>Universidade de Lubumbashi:</strong> Principal instituição de ensino superior</li>
+                    <li><strong>Governo Provincial de Katanga:</strong> Administração local</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>3. Principais Marcos Históricos Materiais</h3>
+                
+                <h4>Período Colonial:</h4>
+                <ul>
+                    <li><strong>Estação Ferroviária Central:</strong> Símbolo da conexão regional</li>
+                    <li><strong>Catedral de São Pedro e Paulo:</strong> Principal igreja católica</li>
+                    <li><strong>Edifícios da UMHK:</strong> Arquitetura industrial colonial</li>
+                    <li><strong>Bairro Europeu:</strong> Área residencial colonial preservada</li>
+                </ul>
+
+                <h4>Período Pós-Colonial:</h4>
+                <ul>
+                    <li><strong>Universidade de Lubumbashi:</strong> Campus universitário</li>
+                    <li><strong>Estádio TP Mazembe:</strong> Centro esportivo</li>
+                    <li><strong>Mercado Central:</strong> Centro comercial tradicional</li>
+                    <li><strong>Monumentos da Independência:</strong> Marcos da libertação</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>4. Símbolos Históricos Não Materiais</h3>
+                
+                <h4>Símbolos Coloniais:</h4>
+                <ul>
+                    <li><strong>"Elisabethville":</strong> Nome colonial em memória da realeza belga</li>
+                    <li><strong>"Capital do Cobre":</strong> Identidade mineira da cidade</li>
+                    <li><strong>Arquitetura Art Déco:</strong> Estilo arquitetônico característico</li>
+                </ul>
+
+                <h4>Símbolos Pós-Coloniais:</h4>
+                <ul>
+                    <li><strong>"Lubumbashi":</strong> Nome tradicional local</li>
+                    <li><strong>"Coração Econômico do Congo":</strong> Importância econômica nacional</li>
+                    <li><strong>TP Mazembe:</strong> Clube de futebol símbolo da cidade</li>
+                    <li><strong>Resistência Katanguesa:</strong> Identidade de autonomia regional</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>5. Principais Momentos Históricos</h3>
+                
+                <h4>Período Colonial (1910-1960):</h4>
+                <ul>
+                    <li><strong>1910-1920:</strong> Desenvolvimento inicial da exploração mineira</li>
+                    <li><strong>1920-1940:</strong> Crescimento urbano e industrial acelerado</li>
+                    <li><strong>1940-1960:</strong> Consolidação como centro econômico regional</li>
+                </ul>
+
+                <h4>Independência e Secessão (1960-1963):</h4>
+                <ul>
+                    <li><strong>30 de junho de 1960:</strong> Independência do Congo Belga</li>
+                    <li><strong>11 de julho de 1960:</strong> Secessão de Katanga liderada por Moïse Tshombe</li>
+                    <li><strong>1963:</strong> Fim da secessão e reintegração ao Congo</li>
+                </ul>
+
+                <h4>Período Pós-Colonial:</h4>
+                <ul>
+                    <li><strong>1965:</strong> Golpe de Mobutu Sese Seko</li>
+                    <li><strong>1971:</strong> Renomeação do país para Zaire</li>
+                    <li><strong>1997:</strong> Queda de Mobutu e ascensão de Laurent-Désiré Kabila</li>
+                    <li><strong>1998-2003:</strong> Segunda Guerra do Congo</li>
+                    <li><strong>2006-presente:</strong> Estabilização democrática gradual</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- GEOGRAFIA -->
+        <section class="content-section">
+            <h2>🗺️ Geografia</h2>
+            
+            <div class="map-container">
+                <h3>Mapa de Lubumbashi</h3>
+                <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=27.40,-11.70,27.60,-11.50&layer=mapnik&marker=-11.666,27.483" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                <p><small>Base cartográfica: contribuidores do OpenStreetMap</small></p>
+            </div>
+
+            <div class="info-card">
+                <h3>1. Localização da Cidade</h3>
+                <p><strong>Posição Geográfica:</strong></p>
+                <ul>
+                    <li><strong>Coordenadas:</strong> 11°40'S, 27°28'E</li>
+                    <li><strong>Província:</strong> Haut-Katanga (Alto Catanga)</li>
+                    <li><strong>Região:</strong> Sudeste da República Democrática do Congo</li>
+                    <li><strong>Altitude:</strong> Aproximadamente 1.230 metros</li>
+                </ul>
+
+                <p><strong>Contexto Regional:</strong></p>
+                <ul>
+                    <li><strong>Fronteiras:</strong> Próxima à Zâmbia (sul) e Angola (sudoeste)</li>
+                    <li><strong>Distância de Kinshasa:</strong> ~1.700 km</li>
+                    <li><strong>Posição Estratégica:</strong> Portal de entrada para o interior africano</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>2. Desenho Geográfico da Cidade</h3>
+                <ul>
+                    <li><strong>Área:</strong> 870,7 km²</li>
+                    <li><strong>Relevo:</strong> Planalto do Katanga</li>
+                    <li><strong>Hidrografia:</strong> Rio Kafubu (afluente do Rio Congo)</li>
+                    <li><strong>Clima:</strong> Tropical de altitude com estação seca e chuvosa</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>3. Desenho Sociogeográfico da Cidade</h3>
+                <p><strong>Distribuição Populacional:</strong></p>
+                <ul>
+                    <li><strong>População Urbana:</strong> ~2,8 milhões (estimativa 2021)</li>
+                    <li><strong>Densidade:</strong> 3.730 pessoas/km²</li>
+                    <li><strong>Crescimento:</strong> Taxa de crescimento populacional de ~4% ao ano</li>
+                </ul>
+
+                <p><strong>Divisão Socioeconômica:</strong></p>
+                <ul>
+                    <li><strong>Centro Histórico:</strong> Área comercial e administrativa</li>
+                    <li><strong>Bairros Residenciais:</strong> Classes média e alta</li>
+                    <li><strong>Periferias:</strong> Assentamentos de baixa renda</li>
+                    <li><strong>Zona Industrial:</strong> Complexos mineiros e industriais</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>4. Tendência de Crescimento</h3>
+                
+                <h4>Expansão Urbana:</h4>
+                <ul>
+                    <li><strong>Crescimento Horizontal:</strong> Expansão para as periferias</li>
+                    <li><strong>Densificação:</strong> Adensamento das áreas centrais</li>
+                    <li><strong>Novos Bairros:</strong> Desenvolvimento de novos assentamentos</li>
+                    <li><strong>Infraestrutura:</strong> Necessidade de expansão de serviços básicos</li>
+                </ul>
+
+                <h4>Desenvolvimento Econômico:</h4>
+                <ul>
+                    <li><strong>Mineração:</strong> Continuidade da exploração de cobre e cobalto</li>
+                    <li><strong>Indústria:</strong> Desenvolvimento de indústrias de transformação</li>
+                    <li><strong>Comércio:</strong> Expansão do setor terciário</li>
+                    <li><strong>Educação:</strong> Crescimento do ensino superior</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- POPULAÇÃO -->
+        <section class="content-section">
+            <h2>👥 População</h2>
+            
+            <div class="info-card">
+                <h3>1. População Analisada</h3>
+                <ul>
+                    <li><strong>Lubumbashi:</strong> ~2,8 milhões de habitantes (área metropolitana)</li>
+                    <li><strong>Área Urbana:</strong> ~2,3 milhões</li>
+                    <li><strong>Crescimento:</strong> 4-5% ao ano</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>2. Divisão Populacional</h3>
+                
+                <h4>Por Faixa Etária:</h4>
+                <ul>
+                    <li><strong>0-14 anos:</strong> ~42% (população muito jovem)</li>
+                    <li><strong>15-64 anos:</strong> ~55% (população economicamente ativa)</li>
+                    <li><strong>65+ anos:</strong> ~3% (população idosa reduzida)</li>
+                </ul>
+
+                <h4>Por Gênero:</h4>
+                <ul>
+                    <li><strong>Masculino:</strong> ~49,7%</li>
+                    <li><strong>Feminino:</strong> ~50,3%</li>
+                </ul>
+
+                <h4>Por Escolaridade:</h4>
+                <ul>
+                    <li><strong>Analfabetos:</strong> ~25%</li>
+                    <li><strong>Ensino Básico:</strong> ~50%</li>
+                    <li><strong>Ensino Médio:</strong> ~20%</li>
+                    <li><strong>Ensino Superior:</strong> ~5%</li>
+                </ul>
+
+                <h4>Por Orientação Religiosa:</h4>
+                <ul>
+                    <li><strong>Cristãos:</strong> ~90% (católicos e protestantes)</li>
+                    <li><strong>Religiões Tradicionais:</strong> ~8%</li>
+                    <li><strong>Outros/Sem religião:</strong> ~2%</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>3. Fatores de Afinidade e Relacionamento</h3>
+                <ul>
+                    <li><strong>Trabalho:</strong> Atividades mineiras e industriais</li>
+                    <li><strong>Educação:</strong> Universidade e escolas como pontos de encontro</li>
+                    <li><strong>Religião:</strong> Igrejas como centros comunitários</li>
+                    <li><strong>Etnia:</strong> Grupos linguísticos (Swahili, Lingala, línguas locais)</li>
+                    <li><strong>Vizinhança:</strong> Relações de proximidade nos bairros</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>4. Estrutura Social Familiar</h3>
+                <ul>
+                    <li><strong>Família Extensa:</strong> Modelo tradicional africano</li>
+                    <li><strong>Urbanização:</strong> Transição para família nuclear</li>
+                    <li><strong>Matrilinearidade:</strong> Influência de tradições locais</li>
+                    <li><strong>Poligamia:</strong> Ainda presente em contextos tradicionais</li>
+                    <li><strong>Solidariedade:</strong> Redes de apoio familiar</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>5. Orientação Sociofilosófica</h3>
+                <ul>
+                    <li><strong>Urbana:</strong> Mentalidade predominantemente urbana</li>
+                    <li><strong>Tradicional-Moderna:</strong> Transição entre valores</li>
+                    <li><strong>Coletivista:</strong> Prioridade do grupo sobre o indivíduo</li>
+                    <li><strong>Mística-Materialista:</strong> Combinação de valores espirituais e materiais</li>
+                    <li><strong>Pragmática:</strong> Foco na sobrevivência e melhoria de vida</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- CULTURA -->
+        <section class="content-section">
+            <h2>🎭 Cultura</h2>
+            
+            <div class="info-card">
+                <h3>1. Orientação Moderna ou Pós-Moderna</h3>
+                <p><strong>Características Predominantes:</strong></p>
+                <ul>
+                    <li><strong>Moderna em Transição:</strong> Cidade industrial com mentalidade moderna em desenvolvimento</li>
+                    <li><strong>Urbanização Acelerada:</strong> Processo de modernização através da industrialização</li>
+                    <li><strong>Educação Superior:</strong> Presença da Universidade de Lubumbashi como centro de conhecimento</li>
+                    <li><strong>Tecnologia:</strong> Crescente acesso a tecnologias modernas</li>
+                    <li><strong>Globalização:</strong> Influência de culturas externas através do comércio e mídia</li>
+                </ul>
+
+                <p><strong>Receptividade ao Evangelho:</strong></p>
+                <ul>
+                    <li><strong>Abertura Religiosa:</strong> População tradicionalmente receptiva ao cristianismo</li>
+                    <li><strong>Pluralismo Religioso:</strong> Convivência de diferentes denominações cristãs</li>
+                    <li><strong>Busca Espiritual:</strong> Interesse em experiências religiosas autênticas</li>
+                    <li><strong>Sincretismo:</strong> Mistura de cristianismo com elementos culturais africanos</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>2. Cristã, Pós-Cristã ou Não Cristã</h3>
+                <p><strong>Classificação: CRISTÃ</strong></p>
+                
+                <h4>Herança Cristã Histórica:</h4>
+                <ul>
+                    <li><strong>Missões Católicas:</strong> Presença desde o período colonial belga</li>
+                    <li><strong>Arquidiocese de Lubumbashi:</strong> Estabelecida em 1910, centenário em 2010</li>
+                    <li><strong>Protestantismo:</strong> Chegada de missões protestantes no século XX</li>
+                    <li><strong>Crescimento Denominacional:</strong> Expansão de igrejas evangélicas e pentecostais</li>
+                </ul>
+
+                <h4>Composição Religiosa Atual:</h4>
+                <ul>
+                    <li><strong>Cristãos:</strong> ~90% da população total</li>
+                    <li><strong>Católicos:</strong> ~60% (maioria cristã)</li>
+                    <li><strong>Protestantes/Evangélicos:</strong> ~25%</li>
+                    <li><strong>Kimbanguistas:</strong> ~5% (movimento cristão africano)</li>
+                    <li><strong>Outros:</strong> ~10% (religiões tradicionais, outros)</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>3. Materialista ou Mística</h3>
+                <p><strong>Classificação: MÍSTICA-MATERIALISTA (TRANSIÇÃO)</strong></p>
+                
+                <h4>Características Místicas:</h4>
+                <ul>
+                    <li><strong>Espiritualidade Africana:</strong> Valorização do mundo espiritual</li>
+                    <li><strong>Religiosidade Popular:</strong> Práticas religiosas intensas</li>
+                    <li><strong>Cura Divina:</strong> Busca por milagres e cura espiritual</li>
+                    <li><strong>Profetismo:</strong> Movimento de profetas e visionários</li>
+                    <li><strong>Sincretismo:</strong> Mistura de cristianismo com tradições ancestrais</li>
+                </ul>
+
+                <h4>Elementos Materialistas Emergentes:</h4>
+                <ul>
+                    <li><strong>Economia Urbana:</strong> Foco no trabalho e renda</li>
+                    <li><strong>Educação:</strong> Valorização do conhecimento formal</li>
+                    <li><strong>Consumo:</strong> Crescente interesse por bens materiais</li>
+                    <li><strong>Desenvolvimento:</strong> Busca por melhoria das condições de vida</li>
+                    <li><strong>Tecnologia:</strong> Adoção de tecnologias modernas</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>4. Principais Valores Sociais</h3>
+                
+                <h4>Valores Tradicionais Africanos:</h4>
+                <ul>
+                    <li><strong>Relacionamento:</strong> Prioridade absoluta nas relações interpessoais</li>
+                    <li><strong>Comunidade:</strong> Vida comunitária e solidariedade</li>
+                    <li><strong>Respeito aos Anciãos:</strong> Veneração à sabedoria dos mais velhos</li>
+                    <li><strong>Hospitalidade:</strong> Recepção calorosa a visitantes</li>
+                    <li><strong>Família Extensa:</strong> Laços familiares amplos e duradouros</li>
+                </ul>
+
+                <h4>Valores Urbanos Emergentes:</h4>
+                <ul>
+                    <li><strong>Educação:</strong> Crescente valorização do conhecimento formal</li>
+                    <li><strong>Trabalho:</strong> Importância do emprego e carreira</li>
+                    <li><strong>Progresso:</strong> Busca por melhoria e desenvolvimento</li>
+                    <li><strong>Inovação:</strong> Abertura a novas ideias e tecnologias</li>
+                    <li><strong>Autonomia:</strong> Crescente individualização urbana</li>
+                </ul>
+
+                <h4>Valores em Tensão:</h4>
+                <ul>
+                    <li><strong>Tradição vs. Modernidade:</strong> Conflito entre valores ancestrais e modernos</li>
+                    <li><strong>Coletivo vs. Individual:</strong> Tensão entre comunidade e autonomia pessoal</li>
+                    <li><strong>Espiritual vs. Material:</strong> Equilíbrio entre necessidades espirituais e materiais</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>5. Principais Valores Religiosos</h3>
+                
+                <h4>Conceito de Deus:</h4>
+                <ul>
+                    <li><strong>Deus Supremo:</strong> Criador e governante do universo</li>
+                    <li><strong>Deus Pessoal:</strong> Relacionamento íntimo e pessoal com o divino</li>
+                    <li><strong>Deus Provedor:</strong> Fonte de bênçãos e provisão</li>
+                    <li><strong>Deus Curador:</strong> Poder de cura e milagres</li>
+                    <li><strong>Mediação Espiritual:</strong> Acesso a Deus através de Cristo e santos</li>
+                </ul>
+
+                <h4>Visão da Bíblia:</h4>
+                <ul>
+                    <li><strong>Autoridade Divina:</strong> Palavra de Deus com autoridade absoluta</li>
+                    <li><strong>Guia de Vida:</strong> Manual para conduta moral e espiritual</li>
+                    <li><strong>Fonte de Poder:</strong> Instrumento de oração e libertação</li>
+                    <li><strong>Narrativa Relevante:</strong> Histórias bíblicas aplicáveis à vida africana</li>
+                    <li><strong>Tradição Oral:</strong> Transmissão através de pregação e testemunho</li>
+                </ul>
+
+                <h4>Percepção da Igreja Cristã:</h4>
+                <ul>
+                    <li><strong>Família Espiritual:</strong> Igreja como comunidade de fé</li>
+                    <li><strong>Centro Social:</strong> Ponto de encontro e apoio comunitário</li>
+                    <li><strong>Autoridade Moral:</strong> Liderança respeitada na sociedade</li>
+                    <li><strong>Agente de Mudança:</strong> Força de transformação social</li>
+                    <li><strong>Educação e Saúde:</strong> Provedora de serviços sociais</li>
+                </ul>
+
+                <h4>Rituais Religiosos:</h4>
+                <ul>
+                    <li><strong>Culto Dominical:</strong> Participação ativa em serviços religiosos</li>
+                    <li><strong>Batismo:</strong> Rito de iniciação cristã valorizado</li>
+                    <li><strong>Casamento Religioso:</strong> Cerimônia sagrada importante</li>
+                    <li><strong>Festas Cristãs:</strong> Celebração do calendário litúrgico</li>
+                    <li><strong>Vigílias:</strong> Orações prolongadas e jejuns</li>
+                </ul>
+
+                <h4>Igreja Evangélica:</h4>
+                <ul>
+                    <li><strong>Crescimento Acelerado:</strong> Expansão das denominações evangélicas</li>
+                    <li><strong>Pentecostalismo:</strong> Movimento carismático em forte crescimento</li>
+                    <li><strong>Plantio de Igrejas:</strong> Estabelecimento de novas congregações</li>
+                    <li><strong>Evangelização:</strong> Atividade missionária intensa</li>
+                    <li><strong>Liderança Local:</strong> Desenvolvimento de pastores congoleses</li>
+                </ul>
+
+                <h4>Conceito de Redenção:</h4>
+                <ul>
+                    <li><strong>Salvação Pessoal:</strong> Experiência individual de conversão</li>
+                    <li><strong>Libertação:</strong> Livramento de opressões espirituais e sociais</li>
+                    <li><strong>Transformação:</strong> Mudança radical de vida</li>
+                    <li><strong>Vida Eterna:</strong> Esperança na vida após a morte</li>
+                    <li><strong>Restauração:</strong> Cura de relacionamentos e comunidade</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- DESAFIOS E OPORTUNIDADES MISSIONÁRIAS -->
+        <section class="content-section">
+            <h2>🎯 Desafios e Oportunidades Missionárias</h2>
+            
+            <div class="info-card">
+                <h3>Desafios:</h3>
+                <ul>
+                    <li><strong>Sincretismo Religioso:</strong> Mistura de cristianismo com práticas tradicionais</li>
+                    <li><strong>Pobreza Urbana:</strong> Condições socioeconômicas precárias</li>
+                    <li><strong>Proliferação de Seitas:</strong> Crescimento de movimentos religiosos questionáveis</li>
+                    <li><strong>Corrupção:</strong> Problemas éticos na sociedade</li>
+                    <li><strong>Instabilidade Política:</strong> Contexto político complexo</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Oportunidades:</h3>
+                <ul>
+                    <li><strong>População Cristã:</strong> 90% da população se identifica como cristã</li>
+                    <li><strong>Receptividade Espiritual:</strong> Abertura a experiências religiosas</li>
+                    <li><strong>Juventude:</strong> População predominantemente jovem</li>
+                    <li><strong>Educação:</strong> Presença de universidade e instituições de ensino</li>
+                    <li><strong>Centro Regional:</strong> Posição estratégica para alcançar outras regiões</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Estratégias Missionárias Recomendadas:</h3>
+                <ul>
+                    <li><strong>Parceria com Igrejas Locais:</strong> Trabalho conjunto com denominações estabelecidas</li>
+                    <li><strong>Educação Teológica:</strong> Formação de líderes locais</li>
+                    <li><strong>Ministério Social:</strong> Programas de assistência e desenvolvimento</li>
+                    <li><strong>Evangelização Urbana:</strong> Métodos adaptados ao contexto urbano</li>
+                    <li><strong>Discipulado:</strong> Fortalecimento da fé e crescimento espiritual</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- AUTORIDADES LOCAIS -->
+        <section class="content-section">
+            <h2>🏛️ Autoridades Locais</h2>
+            
+            <div class="info-card">
+                <h3>Governo Provincial:</h3>
+                <ul>
+                    <li><strong>Governador da Província de Haut-Katanga</strong></li>
+                    <li><strong>Endereço:</strong> Lubumbashi, República Democrática do Congo</li>
+                    <li><strong>Função:</strong> Administração provincial</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Autoridades Municipais:</h3>
+                <ul>
+                    <li><strong>Prefeito de Lubumbashi</strong></li>
+                    <li><strong>Endereço:</strong> Lubumbashi, República Democrática do Congo</li>
+                    <li><strong>Função:</strong> Administração municipal</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Liderança Religiosa:</h3>
+                <ul>
+                    <li><strong>Arcebispo de Lubumbashi:</strong> Liderança católica</li>
+                    <li><strong>Pastores Evangélicos:</strong> Líderes das denominações protestantes</li>
+                    <li><strong>Líderes Kimbanguistas:</strong> Autoridades do movimento Kimbanguista</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- FONTES -->
+        <section class="content-section">
+            <h2>📚 Fontes</h2>
+            <div class="info-card">
+                <ul>
+                    <li><a href="https://pt.wikipedia.org/wiki/Lubumbashi" target="_blank">Wikipedia: Lubumbashi</a></li>
+                    <li><a href="https://pt.wikipedia.org/wiki/Hist%C3%B3ria_da_Rep%C3%BAblica_Democr%C3%A1tica_do_Congo" target="_blank">Wikipedia: História da República Democrática do Congo</a></li>
+                    <li><a href="https://pt.db-city.com/Rep%C3%BAblica-Democr%C3%A1tica-do-Congo--Haut-Katanga--Lubumbashi" target="_blank">DB-City: Demografia de Lubumbashi</a></li>
+                    <li><a href="https://pt.city-facts.com/lubumbashi/population" target="_blank">CityFacts: Tendências de População e Demografia</a></li>
+                    <li><a href="https://www.researchgate.net/publication/350670074_Interseccoes_entre_Colonialismo_e_o_Historico_Migratorio_Congoles_O_Caso_do_Estado_Livre_do_Congo" target="_blank">ResearchGate: Intersecções entre Colonialismo e o Histórico Migratório Congolês</a></li>
+                    <li><a href="https://pt.thechurchnews.com/global/2022/8/23/23318331/abertura-terra-segundo-templo-republica-democratica-congo/" target="_blank">The Church News: Templo de Lubumbashi</a></li>
+                    <li><a href="https://pt.wikipedia.org/wiki/Igreja_Cat%C3%B3lica_na_Rep%C3%BAblica_Democr%C3%A1tica_do_Congo" target="_blank">Wikipedia: Igreja Católica na República Democrática do Congo</a></li>
+                    <li><a href="https://www.focolare.org/pt-pt/congo-desafios-da-nova-evangelizacao/" target="_blank">Movimento dei Focolari: Congo, desafios da nova evangelização</a></li>
+                    <li><a href="https://www.fides.org/pt/news/18185-AFRICA_CONGO_RD_O_Centenario_da_Arquidiocese_de_Lubumbashi_Os_Bispos_Com_o_mesmo_espirito_dos_missionarios_edificamos_a_Igreja_familia_de_Deus" target="_blank">Agência Fides: O Centenário da Arquidiocese de Lubumbashi</a></li>
+                    <li><a href="https://www.acninternational.org/religiousfreedomreport/es/informe/pais/2023/republica-democratica-del-congo" target="_blank">ACN International: República Democrática del Congo Report 2023</a></li>
+                    <li><a href="https://www.vaticannews.va/es/iglesia/news/2025-01/rd-congo-catolicos-protestantes-firman-pacto-convivencia-paz.html" target="_blank">Vatican News: RD Congo católicos e protestantes firmam pacto</a></li>
+                    <li><a href="https://books.google.com/books?hl=en&lr=&id=ut8PEQAAQBAJ&oi=fnd&pg=PA2&dq=Lubumbashi+cultura+religi%C3%A3o+cristianismo&ots=EjVKA1Hj5u&sig=yX_FfJzPtBEOuhDaMO1gKsWGHoE" target="_blank">Google Books: O Pluralismo Teológico Cristão na África</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
+

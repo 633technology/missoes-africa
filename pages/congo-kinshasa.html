@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missões — Batista Atitude • República do Congo ▸ Kinshasa</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+<header class="header" id="site-header">
+  <button class="menu-toggle" id="menuToggle" aria-expanded="true" aria-controls="site-nav" aria-label="Alternar menu">
+    ☰ Menu
+  </button>
+
+  <nav class="nav" id="site-nav">
+    <ul>
+      <li class="nav-item"><a href="../index.html">Voltar ao Início</a></li>
+      <li class="nav-item"><a href="angola-bie.html">Angola - Bié</a></li>
+      <li class="nav-item"><a href="congo-lubumbashi.html">República do Congo - Lubumbashi</a></li>
+      <li class="nav-item"><a href="congo-kinshasa.html">República do Congo - Kinshasa</a></li>
+      <li class="nav-item"><a href="mocambique-beira.html">Moçambique - Cidade da Beira</a></li>
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .header{
+    position: sticky; top: 0; z-index: 1000;
+    background:#0B1020; color:#fff;
+    box-shadow: 0 6px 18px rgba(0,0,0,.25);
+    padding:.5rem 1rem;
+    transition: transform .25s ease, padding .25s ease;
+  }
+  .menu-toggle{
+    appearance:none; border:0; background:transparent;
+    color:#fff; font-weight:700; cursor:pointer;
+    font-size:1rem; padding:.35rem .6rem; border-radius:.5rem;
+  }
+  .menu-toggle:hover{ background:rgba(255,255,255,.08); }
+
+  .nav{ overflow:hidden; transition:max-height .3s ease; }
+  .nav ul{
+    list-style:none; margin:.5rem 0 0; padding:0;
+    display:flex; gap:.5rem; flex-wrap:wrap;
+  }
+  .nav a{
+    display:flex; align-items:center; gap:.5rem;
+    text-decoration:none; color:#fff; font-weight:700;
+    padding:.5rem .75rem; border-radius:.6rem;
+  }
+  .nav a:hover{ background:rgba(255,255,255,.08); }
+
+  .header.collapsed{ padding:.35rem 1rem; }
+  .header.collapsed .nav{ max-height:0 !important; }
+
+  @media (max-width: 768px){
+    .nav ul{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+
+<script>
+(() => {
+  const header = document.getElementById('site-header');
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('site-nav');
+
+  const setNavHeight = () => {
+    if (header.classList.contains('collapsed')) {
+      nav.style.maxHeight = '0px';
+      toggle.setAttribute('aria-expanded', 'false');
+    } else {
+      nav.style.maxHeight = nav.scrollHeight + 'px';
+      toggle.setAttribute('aria-expanded', 'true');
+    }
+  };
+
+  const saved = localStorage.getItem('menuCollapsed');
+  if (saved === '1' || window.matchMedia('(max-width: 768px)').matches) {
+    header.classList.add('collapsed');
+  }
+  setNavHeight();
+  window.addEventListener('resize', setNavHeight);
+
+  toggle.addEventListener('click', () => {
+    header.classList.toggle('collapsed');
+    localStorage.setItem('menuCollapsed', header.classList.contains('collapsed') ? '1' : '0');
+    setNavHeight();
+  });
+
+  let lastY = window.scrollY;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    const goingDown = y > lastY + 5;
+    const nearTop = y < 80;
+    if (goingDown && !header.classList.contains('collapsed')) {
+      header.classList.add('collapsed');
+      setNavHeight();
+    } else if (!goingDown && nearTop && localStorage.getItem('menuCollapsed') !== '1') {
+      header.classList.remove('collapsed');
+      setNavHeight();
+    }
+    lastY = y;
+  });
+})();
+</script>
+
+
+        <style>
+            .header-content .logo-text h1,
+            .header-content .logo-text p {
+                color: #fff;
+                /* branco */
+                font-weight: 700;
+                /* negrito */
+            }
+        </style>
+
+    <main class="container">
+        <section class="hero">
+            <h1 class="logo-text">República do Congo ▸ Kinshasa</h1>
+            <p class="logo-text">Pesquisa profunda e completa para orientar o plantio de igrejas, discipulado e obras sociais na maior cidade francófona do mundo.</p>
+        </section>
+
+        <!-- HISTÓRIA -->
+        <section class="content-section">
+            <h2>🏛️ História</h2>
+            
+            <div class="info-card">
+                <h3>1. Marcos de Fundação da Cidade</h3>
+                <p><strong>Data e Propósito Inicial:</strong></p>
+                <ul>
+                    <li><strong>1881:</strong> Fundação por Henry Morton Stanley como posto comercial</li>
+                    <li><strong>Nome Original:</strong> Léopoldville (em homenagem ao Rei Leopoldo II da Bélgica)</li>
+                    <li><strong>1966:</strong> Renomeada para Kinshasa após a independência</li>
+                    <li><strong>Propósito Colonial:</strong> Porto fluvial e centro administrativo do Congo Belga</li>
+                </ul>
+
+                <p><strong>DNA da Cidade:</strong></p>
+                <ul>
+                    <li><strong>Porto Fluvial:</strong> Controle da navegação no Rio Congo</li>
+                    <li><strong>Centro Administrativo:</strong> Capital do Congo Belga e depois da RDC</li>
+                    <li><strong>Hub Comercial:</strong> Ponto de convergência do comércio regional</li>
+                    <li><strong>Metrópole Africana:</strong> Maior cidade francófona do mundo</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>2. Principais Instituições Fundadoras</h3>
+                
+                <h4>Instituições Coloniais Belgas:</h4>
+                <ul>
+                    <li><strong>Administração Colonial:</strong> Governo do Congo Belga</li>
+                    <li><strong>Companhia do Caminho de Ferro Matadi-Léopoldville (1887-1898):</strong> Conexão com o porto atlântico</li>
+                    <li><strong>Missões Católicas:</strong> Evangelização e educação</li>
+                    <li><strong>Empresas Concessionárias:</strong> Exploração de recursos naturais</li>
+                </ul>
+
+                <h4>Instituições Pós-Independência:</h4>
+                <ul>
+                    <li><strong>Governo da República Democrática do Congo:</strong> Administração nacional</li>
+                    <li><strong>Universidade de Kinshasa:</strong> Principal instituição de ensino superior</li>
+                    <li><strong>Banco Central do Congo:</strong> Sistema financeiro nacional</li>
+                    <li><strong>Empresas Estatais:</strong> Controle de recursos estratégicos</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>3. Principais Marcos Históricos Materiais</h3>
+                
+                <h4>Período Colonial:</h4>
+                <ul>
+                    <li><strong>Estação Central do Caminho de Ferro:</strong> Conexão Matadi-Léopoldville</li>
+                    <li><strong>Catedral Notre-Dame du Congo:</strong> Principal igreja católica</li>
+                    <li><strong>Palácio do Governador:</strong> Sede do poder colonial</li>
+                    <li><strong>Boulevard du 30-Juin:</strong> Avenida principal da era colonial</li>
+                </ul>
+
+                <h4>Período Pós-Colonial:</h4>
+                <ul>
+                    <li><strong>Palácio da Nação:</strong> Residência presidencial</li>
+                    <li><strong>Palácio do Povo:</strong> Parlamento nacional</li>
+                    <li><strong>Universidade de Kinshasa:</strong> Campus universitário</li>
+                    <li><strong>Estádio dos Mártires:</strong> Principal estádio esportivo</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>4. Símbolos Históricos Não Materiais</h3>
+                
+                <h4>Símbolos Coloniais:</h4>
+                <ul>
+                    <li><strong>"Léopoldville":</strong> Nome em homenagem ao rei belga</li>
+                    <li><strong>"Kin la Belle":</strong> Referência à beleza da cidade</li>
+                    <li><strong>"Le Nouveau Congo":</strong> Símbolo da modernização colonial</li>
+                </ul>
+
+                <h4>Símbolos Pós-Coloniais:</h4>
+                <ul>
+                    <li><strong>"Kinshasa":</strong> Nome tradicional local</li>
+                    <li><strong>"Kin la Poubelle":</strong> Crítica às condições urbanas deterioradas</li>
+                    <li><strong>"Capital da Música Africana":</strong> Centro da rumba congolesa</li>
+                    <li><strong>"Coração da África":</strong> Posição central no continente</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>5. Principais Momentos Históricos</h3>
+                
+                <h4>Período Colonial (1881-1960):</h4>
+                <ul>
+                    <li><strong>1881-1900:</strong> Estabelecimento do posto comercial</li>
+                    <li><strong>1900-1920:</strong> Desenvolvimento como capital colonial</li>
+                    <li><strong>1920-1950:</strong> Crescimento urbano e industrial</li>
+                    <li><strong>1950-1960:</strong> Movimentos de independência</li>
+                </ul>
+
+                <h4>Independência e Crise (1960-1965):</h4>
+                <ul>
+                    <li><strong>30 de junho de 1960:</strong> Independência do Congo Belga</li>
+                    <li><strong>1960-1963:</strong> Crise do Congo e intervenção da ONU</li>
+                    <li><strong>1961:</strong> Assassinato de Patrice Lumumba</li>
+                    <li><strong>1965:</strong> Golpe de Mobutu Sese Seko</li>
+                </ul>
+
+                <h4>Era Mobutu (1965-1997):</h4>
+                <ul>
+                    <li><strong>1971:</strong> País renomeado para Zaire</li>
+                    <li><strong>1970-1990:</strong> Ditadura de Mobutu</li>
+                    <li><strong>1990-1997:</strong> Declínio do regime e guerras</li>
+                </ul>
+
+                <h4>Era Democrática (1997-presente):</h4>
+                <ul>
+                    <li><strong>1997:</strong> Queda de Mobutu e ascensão de Laurent-Désiré Kabila</li>
+                    <li><strong>1998-2003:</strong> Segunda Guerra do Congo</li>
+                    <li><strong>2006:</strong> Primeiras eleições democráticas</li>
+                    <li><strong>2019:</strong> Primeira transição democrática pacífica</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- GEOGRAFIA -->
+        <section class="content-section">
+            <h2>🗺️ Geografia</h2>
+            
+            <div class="map-container">
+                <h3>Mapa de Kinshasa</h3>
+                <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=15.20,-4.40,15.40,-4.20&layer=mapnik&marker=-4.32,15.31" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                <p><small>Base cartográfica: contribuidores do OpenStreetMap</small></p>
+            </div>
+
+            <div class="info-card">
+                <h3>1. Localização da Cidade</h3>
+                <p><strong>Posição Geográfica:</strong></p>
+                <ul>
+                    <li><strong>Coordenadas:</strong> 4°19'S, 15°19'E</li>
+                    <li><strong>Localização:</strong> Oeste da República Democrática do Congo</li>
+                    <li><strong>Rio Congo:</strong> Margem sul do Rio Congo</li>
+                    <li><strong>Altitude:</strong> 240-370 metros acima do nível do mar</li>
+                </ul>
+
+                <p><strong>Contexto Regional:</strong></p>
+                <ul>
+                    <li><strong>Fronteira:</strong> Próxima à República do Congo (Brazzaville)</li>
+                    <li><strong>Posição:</strong> Portal de entrada para o interior africano</li>
+                    <li><strong>Distância do Atlântico:</strong> ~500 km via Rio Congo</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>2. Desenho Geográfico da Cidade</h3>
+                <ul>
+                    <li><strong>Área:</strong> 9.965 km² (área metropolitana)</li>
+                    <li><strong>Relevo:</strong> Planalto com colinas suaves</li>
+                    <li><strong>Hidrografia:</strong> Rio Congo e afluentes (Kasai, Kwango)</li>
+                    <li><strong>Clima:</strong> Tropical quente e húmido com duas estações</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>3. Desenho Sociogeográfico da Cidade</h3>
+                <p><strong>Distribuição Populacional:</strong></p>
+                <ul>
+                    <li><strong>População Metropolitana:</strong> ~17,8 milhões (estimativa 2025)</li>
+                    <li><strong>Densidade:</strong> 949,7 hab/km²</li>
+                    <li><strong>Crescimento:</strong> Taxa de crescimento de ~4-5% ao ano</li>
+                </ul>
+
+                <p><strong>Divisão Socioeconômica:</strong></p>
+                <ul>
+                    <li><strong>Gombe:</strong> Centro comercial e administrativo (classe alta)</li>
+                    <li><strong>Limete, Kinshasa:</strong> Bairros de classe média</li>
+                    <li><strong>Periferias:</strong> Assentamentos de baixa renda (maioria da população)</li>
+                    <li><strong>Communes:</strong> 24 comunas administrativas</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>4. Tendência de Crescimento</h3>
+                
+                <h4>Expansão Urbana:</h4>
+                <ul>
+                    <li><strong>Crescimento Horizontal:</strong> Expansão descontrolada para as periferias</li>
+                    <li><strong>Megacidade:</strong> Projeção de 20+ milhões de habitantes até 2030</li>
+                    <li><strong>Assentamentos Informais:</strong> Crescimento de favelas urbanas</li>
+                    <li><strong>Pressão sobre Infraestrutura:</strong> Sobrecarga dos serviços urbanos</li>
+                </ul>
+
+                <h4>Desenvolvimento Econômico:</h4>
+                <ul>
+                    <li><strong>Setor Informal:</strong> Economia predominantemente informal</li>
+                    <li><strong>Comércio:</strong> Centro comercial da África Central</li>
+                    <li><strong>Indústria:</strong> Desenvolvimento industrial limitado</li>
+                    <li><strong>Serviços:</strong> Crescimento do setor terciário</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- POPULAÇÃO -->
+        <section class="content-section">
+            <h2>👥 População</h2>
+            
+            <div class="info-card">
+                <h3>1. População Analisada</h3>
+                <ul>
+                    <li><strong>Kinshasa:</strong> ~17,8 milhões de habitantes (área metropolitana 2025)</li>
+                    <li><strong>Crescimento:</strong> +746.200 habitantes por ano</li>
+                    <li><strong>Projeção 2030:</strong> ~20 milhões de habitantes</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>2. Divisão Populacional</h3>
+                
+                <h4>Por Faixa Etária:</h4>
+                <ul>
+                    <li><strong>0-14 anos:</strong> ~43% (população extremamente jovem)</li>
+                    <li><strong>15-64 anos:</strong> ~54% (população economicamente ativa)</li>
+                    <li><strong>65+ anos:</strong> ~3% (população idosa muito reduzida)</li>
+                </ul>
+
+                <h4>Por Gênero:</h4>
+                <ul>
+                    <li><strong>Masculino:</strong> ~49%</li>
+                    <li><strong>Feminino:</strong> ~51%</li>
+                </ul>
+
+                <h4>Por Escolaridade:</h4>
+                <ul>
+                    <li><strong>Analfabetos:</strong> ~20%</li>
+                    <li><strong>Ensino Básico:</strong> ~55%</li>
+                    <li><strong>Ensino Médio:</strong> ~20%</li>
+                    <li><strong>Ensino Superior:</strong> ~5%</li>
+                </ul>
+
+                <h4>Por Orientação Religiosa:</h4>
+                <ul>
+                    <li><strong>Cristãos:</strong> ~95% (católicos, protestantes, kimbanguistas)</li>
+                    <li><strong>Muçulmanos:</strong> ~2%</li>
+                    <li><strong>Religiões Tradicionais:</strong> ~2%</li>
+                    <li><strong>Outros/Sem religião:</strong> ~1%</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>3. Fatores de Afinidade e Relacionamento</h3>
+                <ul>
+                    <li><strong>Família Extensa:</strong> Redes familiares amplas</li>
+                    <li><strong>Trabalho Informal:</strong> Atividades econômicas de subsistência</li>
+                    <li><strong>Religião:</strong> Igrejas como centros comunitários</li>
+                    <li><strong>Etnia/Língua:</strong> Grupos linguísticos (Lingala, Kikongo, Swahili, Tshiluba)</li>
+                    <li><strong>Vizinhança:</strong> Solidariedade nos bairros</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>4. Estrutura Social Familiar</h3>
+                <ul>
+                    <li><strong>Família Extensa:</strong> Modelo tradicional predominante</li>
+                    <li><strong>Urbanização:</strong> Adaptação à vida urbana</li>
+                    <li><strong>Matriarcado/Patriarcado:</strong> Variação conforme etnia</li>
+                    <li><strong>Poligamia:</strong> Ainda presente em contextos tradicionais</li>
+                    <li><strong>Solidariedade:</strong> Redes de apoio familiar essenciais</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>5. Orientação Sociofilosófica</h3>
+                <ul>
+                    <li><strong>Urbana:</strong> Mentalidade metropolitana</li>
+                    <li><strong>Tradicional-Moderna:</strong> Síntese de valores</li>
+                    <li><strong>Coletivista:</strong> Prioridade da comunidade</li>
+                    <li><strong>Mística:</strong> Forte espiritualidade</li>
+                    <li><strong>Pragmática:</strong> Foco na sobrevivência urbana</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- CULTURA -->
+        <section class="content-section">
+            <h2>🎭 Cultura</h2>
+            
+            <div class="info-card">
+                <h3>1. Orientação Moderna ou Pós-Moderna</h3>
+                <p><strong>Características Predominantes:</strong></p>
+                <ul>
+                    <li><strong>Moderna em Transição:</strong> Megacidade com características modernas e pós-modernas</li>
+                    <li><strong>Globalização:</strong> Forte influência de culturas globais através da mídia</li>
+                    <li><strong>Urbanização Acelerada:</strong> Processo de modernização através do crescimento urbano</li>
+                    <li><strong>Pluralismo Cultural:</strong> Convivência de múltiplas culturas e línguas</li>
+                    <li><strong>Tecnologia:</strong> Crescente acesso a tecnologias digitais e redes sociais</li>
+                </ul>
+
+                <p><strong>Receptividade ao Evangelho:</strong></p>
+                <ul>
+                    <li><strong>Abertura Espiritual:</strong> População altamente receptiva a mensagens religiosas</li>
+                    <li><strong>Pluralismo Religioso:</strong> Convivência de múltiplas denominações cristãs</li>
+                    <li><strong>Busca por Esperança:</strong> Contexto de dificuldades socioeconômicas gera busca espiritual</li>
+                    <li><strong>Tradição Cristã:</strong> Herança cristã de mais de 500 anos</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>2. Cristã, Pós-Cristã ou Não Cristã</h3>
+                <p><strong>Classificação: CRISTÃ</strong></p>
+                
+                <h4>Herança Cristã Histórica:</h4>
+                <ul>
+                    <li><strong>Reino do Congo (1491):</strong> Cristianismo oficial desde o século XV</li>
+                    <li><strong>Missões Católicas:</strong> Presença contínua desde o período colonial</li>
+                    <li><strong>Protestantismo:</strong> Chegada no século XIX e XX</li>
+                    <li><strong>Movimentos Africanos:</strong> Desenvolvimento de cristianismo contextualizado</li>
+                </ul>
+
+                <h4>Composição Religiosa Atual:</h4>
+                <ul>
+                    <li><strong>Cristãos:</strong> ~95% da população total</li>
+                    <li><strong>Católicos:</strong> ~50% (maior denominação)</li>
+                    <li><strong>Protestantes:</strong> ~20% (múltiplas denominações)</li>
+                    <li><strong>Kimbanguistas:</strong> ~12% (maior igreja africana independente)</li>
+                    <li><strong>Pentecostais:</strong> ~8% (crescimento acelerado)</li>
+                    <li><strong>Outros:</strong> ~5% (muçulmanos, religiões tradicionais)</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>3. Materialista ou Mística</h3>
+                <p><strong>Classificação: PREDOMINANTEMENTE MÍSTICA</strong></p>
+                
+                <h4>Características Místicas:</h4>
+                <ul>
+                    <li><strong>Espiritualidade Intensa:</strong> Vida religiosa ativa e participativa</li>
+                    <li><strong>Milagres e Cura:</strong> Busca por intervenção divina na vida cotidiana</li>
+                    <li><strong>Profetismo:</strong> Movimento de profetas e visionários</li>
+                    <li><strong>Sonhos e Visões:</strong> Importância da comunicação espiritual</li>
+                    <li><strong>Sincretismo:</strong> Mistura de cristianismo com elementos tradicionais africanos</li>
+                </ul>
+
+                <h4>Elementos Materialistas Emergentes:</h4>
+                <ul>
+                    <li><strong>Economia de Sobrevivência:</strong> Preocupação com necessidades básicas</li>
+                    <li><strong>Consumismo Urbano:</strong> Crescente interesse por bens materiais</li>
+                    <li><strong>Educação:</strong> Valorização do conhecimento como meio de ascensão</li>
+                    <li><strong>Tecnologia:</strong> Adoção de tecnologias modernas</li>
+                    <li><strong>Empreendedorismo:</strong> Busca por melhoria econômica</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>4. Principais Valores Sociais</h3>
+                
+                <h4>Valores Tradicionais Africanos:</h4>
+                <ul>
+                    <li><strong>Relacionamento:</strong> Prioridade absoluta nas relações interpessoais</li>
+                    <li><strong>Comunidade:</strong> Vida comunitária e solidariedade</li>
+                    <li><strong>Respeito aos Anciãos:</strong> Veneração à sabedoria dos mais velhos</li>
+                    <li><strong>Hospitalidade:</strong> Recepção calorosa a visitantes</li>
+                    <li><strong>Família Extensa:</strong> Laços familiares amplos e duradouros</li>
+                </ul>
+
+                <h4>Valores Urbanos Emergentes:</h4>
+                <ul>
+                    <li><strong>Sobrevivência:</strong> Adaptação às dificuldades urbanas</li>
+                    <li><strong>Educação:</strong> Crescente valorização do conhecimento formal</li>
+                    <li><strong>Empreendedorismo:</strong> Criatividade na geração de renda</li>
+                    <li><strong>Mobilidade Social:</strong> Busca por melhoria de status</li>
+                    <li><strong>Conectividade:</strong> Valorização das redes sociais e comunicação</li>
+                </ul>
+
+                <h4>Valores em Tensão:</h4>
+                <ul>
+                    <li><strong>Tradição vs. Modernidade:</strong> Conflito entre valores ancestrais e urbanos</li>
+                    <li><strong>Individual vs. Coletivo:</strong> Tensão entre autonomia e comunidade</li>
+                    <li><strong>Espiritual vs. Material:</strong> Equilíbrio entre necessidades espirituais e materiais</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>5. Principais Valores Religiosos</h3>
+                
+                <h4>Conceito de Deus:</h4>
+                <ul>
+                    <li><strong>Nzambi Mpungu:</strong> Deus supremo na tradição kongo</li>
+                    <li><strong>Deus Triúno:</strong> Compreensão cristã da Trindade</li>
+                    <li><strong>Deus Provedor:</strong> Fonte de bênçãos e provisão</li>
+                    <li><strong>Deus Curador:</strong> Poder de cura e milagres</li>
+                    <li><strong>Deus Presente:</strong> Intervenção divina na vida cotidiana</li>
+                </ul>
+
+                <h4>Visão da Bíblia:</h4>
+                <ul>
+                    <li><strong>Palavra de Deus:</strong> Autoridade divina absoluta</li>
+                    <li><strong>Guia de Vida:</strong> Manual para conduta moral e espiritual</li>
+                    <li><strong>Fonte de Poder:</strong> Instrumento de oração e libertação</li>
+                    <li><strong>Narrativa Relevante:</strong> Histórias bíblicas aplicáveis à realidade africana</li>
+                    <li><strong>Tradição Oral:</strong> Transmissão através de pregação e testemunho</li>
+                </ul>
+
+                <h4>Percepção da Igreja Cristã:</h4>
+                <ul>
+                    <li><strong>Família Espiritual:</strong> Igreja como comunidade de fé</li>
+                    <li><strong>Centro Social:</strong> Ponto de encontro e apoio comunitário</li>
+                    <li><strong>Autoridade Moral:</strong> Liderança respeitada na sociedade</li>
+                    <li><strong>Agente de Mudança:</strong> Força de transformação social</li>
+                    <li><strong>Refúgio:</strong> Lugar de esperança em meio às dificuldades</li>
+                </ul>
+
+                <h4>Rituais Religiosos:</h4>
+                <ul>
+                    <li><strong>Culto Dominical:</strong> Participação massiva em serviços religiosos</li>
+                    <li><strong>Batismo:</strong> Rito de iniciação cristã altamente valorizado</li>
+                    <li><strong>Casamento Religioso:</strong> Cerimônia sagrada importante</li>
+                    <li><strong>Vigílias:</strong> Orações prolongadas e jejuns</li>
+                    <li><strong>Festivais Religiosos:</strong> Celebrações do calendário cristão</li>
+                </ul>
+
+                <h4>Igreja Evangélica:</h4>
+                <ul>
+                    <li><strong>Crescimento Explosivo:</strong> Expansão acelerada das denominações evangélicas</li>
+                    <li><strong>Pentecostalismo:</strong> Movimento carismático em forte crescimento</li>
+                    <li><strong>Church of Christ in Congo (CCC):</strong> União de 62 denominações protestantes</li>
+                    <li><strong>Plantio de Igrejas:</strong> Estabelecimento contínuo de novas congregações</li>
+                    <li><strong>Evangelização:</strong> Atividade missionária intensa</li>
+                </ul>
+
+                <h4>Conceito de Redenção:</h4>
+                <ul>
+                    <li><strong>Salvação Pessoal:</strong> Experiência individual de conversão</li>
+                    <li><strong>Libertação:</strong> Livramento de opressões espirituais, sociais e econômicas</li>
+                    <li><strong>Transformação:</strong> Mudança radical de vida e circunstâncias</li>
+                    <li><strong>Vida Eterna:</strong> Esperança na vida após a morte</li>
+                    <li><strong>Restauração:</strong> Cura de relacionamentos e comunidade</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- MOVIMENTOS RELIGIOSOS ESPECÍFICOS -->
+        <section class="content-section">
+            <h2>✨ Movimentos Religiosos Específicos</h2>
+            
+            <div class="info-card">
+                <h3>Kimbanguismo</h3>
+                <ul>
+                    <li><strong>Fundação:</strong> 1921 por Simon Kimbangu</li>
+                    <li><strong>Características:</strong> Igreja cristã africana independente</li>
+                    <li><strong>Membros:</strong> ~12% da população de Kinshasa</li>
+                    <li><strong>Doutrina:</strong> Cristianismo contextualizado africano</li>
+                    <li><strong>Reconhecimento:</strong> Membro do Conselho Mundial de Igrejas desde 1969</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Pentecostalismo</h3>
+                <ul>
+                    <li><strong>Crescimento:</strong> Movimento em expansão acelerada</li>
+                    <li><strong>Características:</strong> Ênfase em dons espirituais, cura divina, prosperidade</li>
+                    <li><strong>Denominações:</strong> Múltiplas igrejas pentecostais e neopentecostais</li>
+                    <li><strong>Impacto:</strong> Transformação do panorama religioso congolês</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- DESAFIOS E OPORTUNIDADES MISSIONÁRIAS -->
+        <section class="content-section">
+            <h2>🎯 Desafios e Oportunidades Missionárias</h2>
+            
+            <div class="info-card">
+                <h3>Desafios:</h3>
+                <ul>
+                    <li><strong>Pobreza Urbana:</strong> Condições socioeconômicas extremamente precárias</li>
+                    <li><strong>Crescimento Populacional:</strong> Explosão demográfica descontrolada</li>
+                    <li><strong>Instabilidade Política:</strong> Contexto político complexo e instável</li>
+                    <li><strong>Sincretismo:</strong> Mistura de cristianismo com práticas tradicionais</li>
+                    <li><strong>Proliferação de Seitas:</strong> Crescimento de movimentos religiosos questionáveis</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Oportunidades:</h3>
+                <ul>
+                    <li><strong>População Cristã:</strong> 95% da população se identifica como cristã</li>
+                    <li><strong>Receptividade Espiritual:</strong> Abertura excepcional a mensagens religiosas</li>
+                    <li><strong>Juventude:</strong> População predominantemente jovem (43% menores de 14 anos)</li>
+                    <li><strong>Megacidade:</strong> Concentração populacional facilita alcance missionário</li>
+                    <li><strong>Centro Regional:</strong> Posição estratégica para alcançar toda a África Central</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Estratégias Missionárias Recomendadas:</h3>
+                <ul>
+                    <li><strong>Parceria Ecumênica:</strong> Trabalho conjunto com igrejas estabelecidas</li>
+                    <li><strong>Ministério Social:</strong> Programas de assistência e desenvolvimento urbano</li>
+                    <li><strong>Educação Teológica:</strong> Formação de líderes locais qualificados</li>
+                    <li><strong>Evangelização Urbana:</strong> Métodos adaptados ao contexto de megacidade</li>
+                    <li><strong>Plantio de Igrejas:</strong> Estabelecimento de congregações nos bairros periféricos</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- AUTORIDADES LOCAIS -->
+        <section class="content-section">
+            <h2>🏛️ Autoridades Locais</h2>
+            
+            <div class="info-card">
+                <h3>Governo Nacional:</h3>
+                <ul>
+                    <li><strong>Presidente da República Democrática do Congo</strong></li>
+                    <li><strong>Primeiro-Ministro da República Democrática do Congo</strong></li>
+                    <li><strong>Endereço:</strong> Kinshasa, República Democrática do Congo</li>
+                    <li><strong>Função:</strong> Administração nacional</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Autoridades Municipais:</h3>
+                <ul>
+                    <li><strong>Governador da Cidade-Província de Kinshasa</strong></li>
+                    <li><strong>Prefeitos das Comunas de Kinshasa</strong></li>
+                    <li><strong>Endereço:</strong> Kinshasa, República Democrática do Congo</li>
+                    <li><strong>Função:</strong> Administração da cidade-província e comunas</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Liderança Religiosa:</h3>
+                <ul>
+                    <li><strong>Arcebispo de Kinshasa:</strong> Liderança católica</li>
+                    <li><strong>Líderes da Church of Christ in Congo (CCC):</strong> Liderança protestante</li>
+                    <li><strong>Líderes Kimbanguistas:</strong> Autoridades do movimento Kimbanguista</li>
+                    <li><strong>Líderes Pentecostais:</strong> Pastores de diversas denominações</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- FONTES -->
+        <section class="content-section">
+            <h2>📚 Fontes</h2>
+            <div class="info-card">
+                <ul>
+                    <li><a href="https://pt.wikipedia.org/wiki/Quinxassa" target="_blank">Wikipedia: Quinxassa</a></li>
+                    <li><a href="https://pt.wikipedia.org/wiki/Rep%C3%BAblica_do_Congo_(L%C3%A9opoldville)" target="_blank">Wikipedia: República do Congo (Léopoldville)</a></li>
+                    <li><a href="https://www.blackpast.org/global-african-history/kinshasa-congo-1881/" target="_blank">BlackPast.org: Kinshasa, Democratic Republic of the Congo (1881-)</a></li>
+                    <li><a href="https://pt.db-city.com/Rep%C3%BAblica-Democr%C3%A1tica-do-Congo--Kinshasa" target="_blank">DB-City: Demografia Kinshasa</a></li>
+                    <li><a href="https://worldpopulationreview.com/cities/dr-congo/kinshasa" target="_blank">World Population Review: Kinshasa Population 2025</a></li>
+                    <li><a href="https://repositorio.ufsc.br/handle/123456789/231121" target="_blank">Repositório UFSC: Arquitetura em Kinshasa/República Democrática do Congo</a></li>
+                    <li><a href="https://www.vaticannews.va/pt/igreja/news/2023-01/igreja-catolica-republica-democratica-congo.html" target="_blank">Vatican News: A Igreja na República Democrática do Congo</a></li>
+                    <li><a href="https://pt.wikipedia.org/wiki/Igreja_Cat%C3%B3lica_na_Rep%C3%BAblica_Democr%C3%A1tica_do_Congo" target="_blank">Wikipedia: Igreja Católica na República Democrática do Congo</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/Kimbanguism" target="_blank">Wikipedia: Kimbanguism</a></li>
+                    <li><a href="https://www.britannica.com/topic/Kimbanguist-Church" target="_blank">Britannica: Kimbanguist Church</a></li>
+                    <li><a href="https://www.researchgate.net/publication/380811667_Spirituality_in_Pentecostalism_in_the_Democratic_Republic_of_the_Congo_A_missiological_reflection_on_constitutive_elements" target="_blank">ResearchGate: Spirituality in Pentecostalism in the Democratic Republic of the Congo</a></li>
+                    <li><a href="https://www.fides.org/en/news/73338-AFRICA_DR_CONGO_What_is_the_Kimbanguist_Church" target="_blank">Agência Fides: What is the "Kimbanguist Church"</a></li>
+                    <li><a href="https://hts.org.za/index.php/hts/article/view/9752/27043" target="_blank">HTS Teologiese Studies: Spirituality in Pentecostalism in the Democratic Republic of the Congo</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
+
